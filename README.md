@@ -61,7 +61,7 @@ For your convenience if you want to replicate the experiments proposed in the pa
 
 ## Acknowledgments and licensing
 
-All my original work is released under the terms of the [GNU/GPLv3](https://choosealicense.com/licenses/gpl-3.0/) license. Coping, adapting e republishing it is not only consent but also encouraged. 
+All my original work is released under the terms of the [GNU/GPLv3](https://choosealicense.com/licenses/gpl-3.0/) license. Copying, adapting e republishing it is not only consent but also encouraged. 
 
 ## Citing
 
