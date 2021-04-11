@@ -1,5 +1,8 @@
 import unittest
 import random
+import tempfile
+import shutil
+
 from types import SimpleNamespace
 
 from src.simulator import *
@@ -57,8 +60,11 @@ class TestSystem(unittest.TestCase):
             wds.step(actions)
 
         plotter = ResultsProcessor(wds.logger)
+
+        save_dir = tempfile.mkdtemp()
         plotter.plot({
             "reservoirs": ["current_volume"],
             "pumps": ["quantity"],
             "demands": ["quantity"],
-        }, "./plots")
+        }, save_dir)
+        shutil.rmtree(save_dir)
