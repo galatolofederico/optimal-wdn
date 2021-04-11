@@ -1,0 +1,12 @@
+/env
+__pycache__/
+/tmp
+/.pytest_cache
+
+/plots
+!/plots/.gitkeep
+
+/results
+/results/.gitkeep
+
+/.vscode
