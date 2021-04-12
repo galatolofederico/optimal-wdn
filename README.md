@@ -1,5 +1,6 @@
 # Optimal Management of Water Distribution Networks
 
+Repository for the paper [Multi-objective optimization of water distribution networks via NSGA-II and Pseudo-Weights]()
 
 ## Installation
 
@@ -69,9 +70,9 @@ If you want to cite use you can use this BibTeX
 
 ```
 @article{galatolo_wdn
-,	author	= {}
-,	title	= {}
-,	year	= {}
+,	author	= {Ben Ammar, Samar and Cimino, Mario G.C.A and Foglia, Pierfrancesco and Galatolo, Federico A. and Nouiri, Issam}
+,	title	= {Multi-objective optimization of water distribution networks via NSGA-II and Pseudo-Weights}
+,	year	= {2021}
 }
 ```
 
