@@ -12,7 +12,7 @@ from src.experiments import *
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--experiment", type=str, default="ThresholdPrototype")
+    parser.add_argument("--experiment", type=str, default="ThresholdPrototypeExperiment")
     parser.add_argument("--save", type=str, default="")
 
     args = parser.parse_args()

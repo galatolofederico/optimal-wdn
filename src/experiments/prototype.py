@@ -5,42 +5,12 @@ from src.runners import *
 from src.simulator import *
 
 from src import Logger, Fitness, ResultsProcessor
+from src.experiments.experiment import Experiment
 
-
-
-class ThresholdPrototype:
+class PrototypeExperiment(Experiment):
     def __init__(self):
-        self.problem = WaterDemandProblem(
-            evaluation_period = 24,
-            problem_arguments=dict(
-                n_var=4,
-                n_obj=3,
-                n_constr=1,
-                xl=np.zeros(4),
-                xu=np.ones(4)*20
-            ),
-        )
-
+        super(PrototypeExperiment, self).__init__()
         self.init_system()
-        self.init_runner()
-        self.init_fitness()
-    
-    def init_fitness(self):
-        self.problem.set_fitness(
-            self.fitness,
-            fitness_args = dict(
-                reservoirs=[self.tank],
-                pumps=[self.p1, self.p2]
-            ),
-            feasible_args = dict(
-                reservoirs=[self.tank, self.r1, self.r2]
-            )
-        )
-    
-    def init_runner(self):
-        self.runner = ThresholdRunner(self.wds)
-        self.problem.set_runner(self.runner)
-
 
     def init_system(self):
         self.d1_demand = [1.32, 1.32, 0.936, 0.936, 0.936, 2.352, 2.352, 2.352, 2.352, 0.936, 0.936, 1.32, 1.32, 1.32, 1.32, 1.32, 0.402, 0.402, 0.402, 0.402, 0.402, 0.402, 0.402, 0.402]
@@ -66,3 +36,6 @@ class ThresholdPrototype:
 
         self.wds.add_logger(self.logger)
         self.fitness = Fitness(self.logger)
+
+
+

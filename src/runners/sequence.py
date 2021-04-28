@@ -22,3 +22,12 @@ class SequenceRunner(Runner):
         for i in range(0, steps):
             actions = self.sequence[i % self.sequence.shape[0]]
             self.system.step(actions)
+
+    def export_X(self, X):
+        X = X.reshape(self.length, self.pumps)
+        ret = dict()
+
+        for i in range(0, self.pumps):
+            ret["pump_%d" % (i, )] = X[:, i].astype(float).tolist()
+        
+        return ret

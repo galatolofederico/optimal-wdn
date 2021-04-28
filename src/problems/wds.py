@@ -8,8 +8,7 @@ from src.fitness import Fitness
 from src import  ResultsProcessor, Logger
 
 class WaterDemandProblem(Problem):
-    def __init__(self, algorithm_arguments=dict(), problem_arguments=dict(), fitness_args=dict(), feasible_args=dict(), evaluation_period=24):
-        self.algorithm_arguments = algorithm_arguments
+    def __init__(self, problem_arguments=dict(), fitness_args=dict(), feasible_args=dict(), evaluation_period=24):
         self.problem_arguments = problem_arguments
         self.evaluation_period = evaluation_period
         self.fitness_args = fitness_args

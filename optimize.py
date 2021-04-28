@@ -14,7 +14,7 @@ from src.experiments import *
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--experiment", type=str, default="ThresholdPrototype")
+    parser.add_argument("--experiment", type=str, default="ThresholdPrototypeExperiment")
     parser.add_argument("--algorithm", type=str, default="nsga2")
     parser.add_argument("--pop-size", type=int, default=100)
     parser.add_argument("--generations", type=int, default=1000)
@@ -30,7 +30,7 @@ if __name__ == "__main__":
     experiment = getattr(sys.modules[__name__], args.experiment)()
 
     problem_algorithm_arguments = dict()
-    if args.algorithm in experiment.problem.algorithm_arguments: problem_algorithm_arguments = experiment.problem.algorithm_arguments[args.algorithm]
+    if args.algorithm in experiment.algorithm_arguments: problem_algorithm_arguments = experiment.algorithm_arguments[args.algorithm]
     
     algorithm = get_algorithm(args.algorithm, pop_size=args.pop_size, **problem_algorithm_arguments)
 
