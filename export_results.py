@@ -7,7 +7,7 @@ import sys
 import json
 
 
-from src.problems import *
+from src.experiments import *
 
 parser = argparse.ArgumentParser()
 
@@ -21,7 +21,8 @@ problem_args = json.load(open(os.path.join(args.folder, "args.json"), "r"))
 
 vars(args).update(problem_args)
 
-problem = getattr(sys.modules[__name__], args.problem)()
+experiment = getattr(sys.modules[__name__], args.experiment)()
+problem = experiment.problem
 
 names = problem.get_names()
 x_df = pd.DataFrame(data=res.X, columns=["X_%d" % (i, ) for i in range(0, res.X.shape[1])])
