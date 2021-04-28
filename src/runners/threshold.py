@@ -12,8 +12,8 @@ class ThresholdRunner(Runner):
 
         for pump in self.system.pumps:
             self.reservoirs.append(pump.source)
-            self.on_thresholds.append(float(pump.source.max_volume)-1)
-            self.off_thresholds.append(float(pump.source.min_volume)+1)
+            self.on_thresholds.append(float(pump.source.min_volume+1))
+            self.off_thresholds.append(float(pump.source.max_volume-1))
 
     def get_parameters(self):
         return self.on_thresholds + self.off_thresholds

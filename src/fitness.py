@@ -38,7 +38,7 @@ class Fitness:
         }
 
     def feasible(self, reservoirs):
-        underflow = 0
+        underflow = 0.0
         for reservoir in reservoirs:
             history = self.logger.get_object_history(reservoir)
             y = np.array([i["value"] for i in history["underflow_volume"]])
