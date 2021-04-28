@@ -31,4 +31,4 @@ problem = experiment.problem
 for name, strategy in decision_making_strategies.items():
     result = get_decision_making(*strategy).do(res.F)
     os.mkdir(os.path.join(args.folder, name))
-    problem.export_results(res.X[result], res.F[result], experiment.logger, os.path.join(args.folder, name))
+    problem.export_results(res.X[result], res.F[result], res.G[result], experiment.logger, os.path.join(args.folder, name))

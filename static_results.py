@@ -24,7 +24,8 @@ if __name__ == "__main__":
     out = dict()
     experiment.problem._evaluate(np.atleast_2d(X), out)
     F = out["F"][0]
+    G = out["G"][0]
 
     if args.save != "":
         os.mkdir(args.save)
-        experiment.problem.export_results(X, F, experiment.logger, args.save)
+        experiment.problem.export_results(X, F, G, experiment.logger, args.save)

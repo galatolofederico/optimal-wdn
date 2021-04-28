@@ -59,7 +59,7 @@ class WaterDemandProblem(Problem):
             constraints=["underflow"]
         )
 
-    def export_results(self, parameters, objectives, logger, folder):
+    def export_results(self, parameters, objectives, constraints, logger, folder):
         self.runner.set_parameters(parameters)
         self.runner.run(self.evaluation_period)
 
@@ -68,6 +68,7 @@ class WaterDemandProblem(Problem):
             "reservoirs": ["current_volume", "overflow_volume"],
             "pumps": ["quantity"],
             "demands": ["quantity"],
+            "sources": ["quantity"]
         }, folder)
 
         processor.export_xslx(data, os.path.join(folder, "metrics.xlsx"))
@@ -78,6 +79,9 @@ class WaterDemandProblem(Problem):
                 energy = objectives[0],
                 switches = objectives[1],
                 volume_deltas = objectives[2],
+            ),
+            G = dict(
+                underflow = constraints[0]
             )
         )
 

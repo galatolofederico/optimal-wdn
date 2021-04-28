@@ -79,7 +79,7 @@ class GaussianDemand(Demand):
     
     def init(self):
         self.rng = np.random.default_rng(seed=self.seed)
-        gaussian_noise = self.rng.normal(self.mu, self.std, self.samples)
+        gaussian_noise = self.rng.normal(loc=self.mu, scale=self.std, size=self.samples)
         self.hist, edges = np.histogram(gaussian_noise, self.bins, density=True)
         self.hist *= self.scale
     
@@ -97,13 +97,13 @@ class GaussianDemand(Demand):
 
 
 class DoubleGaussianDemand(Demand):
-    def __init__(self, scales, mus, stds, period, source=None, seed=42, bins=None, samples=1000, name=None):
+    def __init__(self, scale, mus, stds, period, source=None, seed=42, bins=None, samples=1000, name=None):
         super(DoubleGaussianDemand, self).__init__(source=source, name=name)
 
         self.source = source
         self.seed = seed
 
-        self.scales = scales
+        self.scale = scale
         self.mus = mus
         self.stds = stds
 
@@ -115,16 +115,15 @@ class DoubleGaussianDemand(Demand):
     
     def init(self):
         self.rng = np.random.default_rng(seed=self.seed)
-        gaussian_noise_1 = self.rng.normal(self.mus[0], self.stds[0], self.samples)
-        gaussian_noise_2 = self.rng.normal(self.mus[1], self.stds[1], self.samples)
         
-        self.hist_1, edges_1 = np.histogram(gaussian_noise_1, self.bins, density=True)
-        self.hist_2, edges_2 = np.histogram(gaussian_noise_2, self.bins, density=True)
+        gaussian_noise_1 = self.rng.normal(loc=self.mus[0], scale=self.stds[0], size=self.samples)
+        gaussian_noise_2 = self.rng.normal(loc=self.mus[1], scale=self.stds[1], size=self.samples)
         
-        self.hist_1 *= self.scales[0]
-        self.hist_2 *= self.scales[1]
+        gaussian_noise = np.hstack((gaussian_noise_1, gaussian_noise_2))
         
-        self.hist = (self.hist_1 + self.hist_2)/2
+        self.hist, edges = np.histogram(gaussian_noise, self.bins, density=True)
+        self.hist *= self.scale
+        
     
     def reset(self):
         pass
