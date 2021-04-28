@@ -4,16 +4,29 @@ from pymoo.model.problem import Problem
 import json
 
 from src.runners import Runner
-from src import  ResultsProcessor
+from src.fitness import Fitness
+from src import  ResultsProcessor, Logger
 
 class WaterDemandProblem(Problem):
-    def __init__(self, algorithm_arguments=dict(), problem_arguments=dict(), evaluation_period=24):
+    def __init__(self, algorithm_arguments=dict(), problem_arguments=dict(), fitness_args=dict(), feasible_args=dict(), evaluation_period=24):
         self.algorithm_arguments = algorithm_arguments
+        self.problem_arguments = problem_arguments
         self.evaluation_period = evaluation_period
+        self.fitness_args = fitness_args
+        self.feasible_args = feasible_args
+
+        super(WaterDemandProblem, self).__init__(**self.problem_arguments)
      
     def set_runner(self, runner):
         assert isinstance(runner, Runner)
         self.runner = runner
+    
+    def set_fitness(self, fitness, fitness_args=dict(), feasible_args=dict()):
+        assert isinstance(fitness, Fitness)
+        self.fitness = fitness
+        self.fitness_args = fitness_args
+        self.feasible_args = feasible_args
+    
 
     def _evaluate(self, X, out, *args, **kwargs):
         assert hasattr(self, "runner")
@@ -22,8 +35,8 @@ class WaterDemandProblem(Problem):
             self.runner.set_parameters(parameters)
             self.runner.run(self.evaluation_period)
 
-            results = self.fitness.fitness(reservoirs=[self.tank], pumps=[self.p1, self.p2])
-            constraints = self.fitness.feasible(reservoirs=[self.tank, self.r1, self.r2])
+            results = self.fitness.fitness(**self.fitness_args)
+            constraints = self.fitness.feasible(**self.feasible_args)
 
             for k, v in results.items():
                 if k not in values: values[k] = list()
@@ -47,11 +60,11 @@ class WaterDemandProblem(Problem):
             constraints=["underflow"]
         )
 
-    def export_results(self, parameters, objectives, folder):
+    def export_results(self, parameters, objectives, logger, folder):
         self.runner.set_parameters(parameters)
         self.runner.run(self.evaluation_period)
 
-        processor = ResultsProcessor(self.logger)
+        processor = ResultsProcessor(logger)
         data = processor.plot({
             "reservoirs": ["current_volume", "overflow_volume"],
             "pumps": ["quantity"],
@@ -61,7 +74,7 @@ class WaterDemandProblem(Problem):
         processor.export_xslx(data, os.path.join(folder, "metrics.xlsx"))
 
         results = dict(
-            X = self.export_X(parameters),
+            X = self.runner.export_X(parameters),
             F = dict(
                 energy = objectives[0],
                 switches = objectives[1],

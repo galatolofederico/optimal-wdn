@@ -6,9 +6,14 @@ class ThresholdRunner(Runner):
     def __init__(self, system):
         super(ThresholdRunner, self).__init__(system)
 
-        self.reservoirs = reservoirs
-        self.on_thresholds = on_thresholds
-        self.off_thresholds = off_thresholds
+        self.reservoirs = list()
+        self.on_thresholds = list()
+        self.off_thresholds = list()
+
+        for pump in self.system.pumps:
+            self.reservoirs.append(pump.source)
+            self.on_thresholds.append(float(pump.source.max_volume)-1)
+            self.off_thresholds.append(float(pump.source.min_volume)+1)
 
     def get_parameters(self):
         return self.on_thresholds + self.off_thresholds
@@ -29,3 +34,13 @@ class ThresholdRunner(Runner):
                     actions[i] = 1
             
             self.system.step(actions)
+
+    def export_X(self, X):
+        p1_on, p2_on, p1_off, p2_off = X
+
+        return dict(
+            pump1_on=p1_on,
+            pump1_off = p1_off,
+            pump2_on=p2_on,
+            pump2_off=p2_off
+        )

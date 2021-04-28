@@ -3,7 +3,7 @@ from pymoo.factory import get_crossover, get_mutation, get_sampling
 
 from src.problems import WaterDemandProblem
 from src.runners import ThresholdRunner, SequenceRunner
-from src.systems.prototype import get_prototype
+from src.experiments.prototype import get_prototype
 
 
 configs = dict(
@@ -25,7 +25,7 @@ configs = dict(
             type = ThresholdRunner,
             args = dict()
         ),
-        system = dict(
+        experiment = dict(
             type = get_prototype,
             args = dict()
         )

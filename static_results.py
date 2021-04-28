@@ -6,33 +6,25 @@ import os
 
 from src.problems import *
 from src.runners import *
-from src.systems import *
+from src.experiments import *
 
-from configs import configs
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--config", type=str, default="prototype_th")
+    parser.add_argument("--experiment", type=str, default="ThresholdPrototype")
     parser.add_argument("--save", type=str, default="")
 
     args = parser.parse_args()
     
-    assert args.config in configs
-    config = configs[args.config]
+    experiment = getattr(sys.modules[__name__], args.experiment)()
 
-    problem = config["problem"]["type"](**config["problem"]["args"])
-    system = config["system"]["type"](**config["system"]["args"])
+    X = np.array(experiment.runner.get_parameters())    
 
-    runner = config["runner"]["type"](system["system"], **config["runner"]["args"])
-    
-    
-
-    assert False
     out = dict()
-    problem._evaluate(np.atleast_2d(X), out)
+    experiment.problem._evaluate(np.atleast_2d(X), out)
     F = out["F"][0]
 
     if args.save != "":
         os.mkdir(args.save)
-        problem.export_results(X, F, args.save)
+        experiment.problem.export_results(X, F, experiment.logger, args.save)

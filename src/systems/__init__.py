@@ -1,1 +1,0 @@
-from src.systems.prototype import get_prototype
