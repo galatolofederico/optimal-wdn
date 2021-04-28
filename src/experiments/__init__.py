@@ -1,2 +1,2 @@
 from src.experiments.sequence import SequencePrototypeExperiment
-from src.experiments.threshold import ThresholdPrototypeExperiment
+from src.experiments.threshold import ThresholdPrototypeExperiment, ThresholdCaseStudyExperiment

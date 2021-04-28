@@ -38,6 +38,28 @@ class RandomDemand(Demand):
             "quantity": quantity
         }
 
+class UniformDemand(Demand):
+    def __init__(self, source=None, seed=42, range=None, name=None):
+        super(UniformDemand, self).__init__(source=source, name=name)
+        assert range is not None, "A range is required by a UniformDemand"
+
+        self.source = source
+        self.range = range
+        self.seed = seed
+
+        self.reset()
+    
+    def reset(self):
+        self.rng = random.Random(self.seed)
+    
+    def step(self, t, dt):
+        quantity = self.rng.uniform(*self.range)
+        self.source.decrease(quantity)
+
+        return {
+            "quantity": quantity
+        }
+
 
 class GaussianDemand(Demand):
     def __init__(self, scale, mu, std, period, source=None, seed=42, bins=None, samples=1000, name=None):
@@ -72,6 +94,48 @@ class GaussianDemand(Demand):
             "quantity": quantity
         }
     
+
+
+class DoubleGaussianDemand(Demand):
+    def __init__(self, scales, mus, stds, period, source=None, seed=42, bins=None, samples=1000, name=None):
+        super(DoubleGaussianDemand, self).__init__(source=source, name=name)
+
+        self.source = source
+        self.seed = seed
+
+        self.scales = scales
+        self.mus = mus
+        self.stds = stds
+
+        self.period = period
+        self.bins = period if bins is None else bins
+        self.samples = samples
+
+        self.init()
+    
+    def init(self):
+        self.rng = np.random.default_rng(seed=self.seed)
+        gaussian_noise_1 = self.rng.normal(self.mus[0], self.stds[0], self.samples)
+        gaussian_noise_2 = self.rng.normal(self.mus[1], self.stds[1], self.samples)
+        
+        self.hist_1, edges_1 = np.histogram(gaussian_noise_1, self.bins, density=True)
+        self.hist_2, edges_2 = np.histogram(gaussian_noise_2, self.bins, density=True)
+        
+        self.hist_1 *= self.scales[0]
+        self.hist_2 *= self.scales[1]
+        
+        self.hist = (self.hist_1 + self.hist_2)/2
+    
+    def reset(self):
+        pass
+
+    def step(self, t, dt):
+        quantity = self.hist[t % self.period]
+        self.source.decrease(quantity)
+
+        return {
+            "quantity": quantity
+        }
 
 
 class LoopbackGaussianDemand(GaussianDemand):

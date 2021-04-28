@@ -1,3 +1,5 @@
+import numpy as np
+
 from src.simulator.element import Element
 from src.simulator.reservoir import Reservoir
 
@@ -25,6 +27,41 @@ class ConstantSource(Source):
 
     def step(self, t, dt):
         quantity = self.flow*dt
+        self.destination.increase(quantity)
+        
+        return {
+            "quantity": quantity
+        }
+
+
+
+class GaussianSource(Source):
+    def __init__(self, scale, mu, std, period, destination=None, seed=42, bins=None, samples=1000, name=None):
+        super(GaussianSource, self).__init__(destination, name=name)
+
+        self.destination = destination
+        self.seed = seed
+
+        self.scale = scale
+        self.mu = mu
+        self.std = std
+        self.period = period
+        self.bins = period if bins is None else bins
+        self.samples = samples
+
+        self.init()
+    
+    def init(self):
+        self.rng = np.random.default_rng(seed=self.seed)
+        gaussian_noise = self.rng.normal(self.mu, self.std, self.samples)
+        self.hist, edges = np.histogram(gaussian_noise, self.bins, density=True)
+        self.hist *= self.scale
+    
+    def reset(self):
+        pass
+
+    def step(self, t, dt):
+        quantity = self.hist[t % self.period]
         self.destination.increase(quantity)
         
         return {
