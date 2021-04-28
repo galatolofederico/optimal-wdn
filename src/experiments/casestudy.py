@@ -44,7 +44,7 @@ class CaseStudyExperiment(Experiment):
             self.demands.append(UniformDemand(source=self.tank, range=[0.8, 1.2], seed=i))
 
         for i in range(0, normal_demands):
-            self.demands.append(GaussianDemand(source=self.tank, mu=0, std=5, scale=20, period=24, seed=i))
+            self.demands.append(GaussianDemand(source=self.tank, mu=12, std=5, scale=20, period=24, seed=i))
 
         for i in range(0, double_normal_demands):
             self.demands.append(DoubleGaussianDemand(source=self.tank, mus=[6, 18], stds=[2, 2], scale=10, period=24, seed=i))
