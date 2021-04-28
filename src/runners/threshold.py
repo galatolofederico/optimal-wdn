@@ -19,12 +19,13 @@ class ThresholdRunner(Runner):
         return self.on_thresholds + self.off_thresholds
     
     def set_parameters(self, parameters):
-        self.on_thresholds = parameters[:2]
-        self.off_thresholds = parameters[2:]
+        assert len(parameters) % 2 == 0
+        self.on_thresholds = parameters[:len(parameters)//2]
+        self.off_thresholds = parameters[len(parameters)//2:]
     
     def run(self, steps):
         self.system.reset()
-        actions = [0, 0]
+        actions = np.zeros((len(self.reservoirs)))
         for i in range(0, steps):
             for i, (on_threshold, off_threshold, reservoir) in enumerate(zip(self.on_thresholds, self.off_thresholds, self.reservoirs)):
                 action = None
@@ -36,11 +37,14 @@ class ThresholdRunner(Runner):
             self.system.step(actions)
 
     def export_X(self, X):
-        p1_on, p2_on, p1_off, p2_off = X
+        assert len(X) % 2 == 0
+        on_thresholds = X[:len(X)//2]
+        off_thresholds = X[len(X)//2:]
+        
+        ret = dict()
 
-        return dict(
-            pump1_on=p1_on,
-            pump1_off = p1_off,
-            pump2_on=p2_on,
-            pump2_off=p2_off
-        )
+        for i, (on_threshold, off_threshold) in enumerate(zip(on_thresholds, off_thresholds)):
+            ret[f"pump{i}_on"]  = on_threshold
+            ret[f"pump{i}_off"] = off_threshold
+
+        return ret
