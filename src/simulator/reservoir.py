@@ -1,7 +1,8 @@
 from src.simulator.element import Element
 
 class Reservoir(Element):
-    def __init__(self, system=None, max_volume=None, min_volume=0, initial_volume=0):
+    def __init__(self, system=None, max_volume=None, min_volume=0, initial_volume=0, name=None):
+        super(Reservoir, self).__init__(name)
         assert system is not None, "Each reservoir must be in a System, use the keyword argument 'system' to specify it"
         assert type(system).__name__ == "System", "'system' must be a System"
         

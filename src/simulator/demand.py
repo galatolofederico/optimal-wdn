@@ -5,7 +5,8 @@ from src.simulator.element import Element
 from src.simulator.reservoir import Reservoir
 
 class Demand(Element):
-    def __init__(self, source=None):
+    def __init__(self, source=None, name=None):
+        super(Demand, self).__init__(name)
         assert source is not None, "You have specify the source of the Demand using the keyword argument 'source'"
         assert isinstance(source, Reservoir), "'source' must be a Reservoir"
     
@@ -16,8 +17,8 @@ class Demand(Element):
     
 
 class RandomDemand(Demand):
-    def __init__(self, source=None, seed=42, range=None):
-        super(RandomDemand, self).__init__(source)
+    def __init__(self, source=None, seed=42, range=None, name=None):
+        super(RandomDemand, self).__init__(source=source, name=name)
         assert range is not None, "A range is required by a RandomDemand"
 
         self.source = source
@@ -39,8 +40,8 @@ class RandomDemand(Demand):
 
 
 class GaussianDemand(Demand):
-    def __init__(self, scale, mu, std, period, source=None, seed=42, bins=None, samples=1000):
-        super(GaussianDemand, self).__init__(source)
+    def __init__(self, scale, mu, std, period, source=None, seed=42, bins=None, samples=1000, name=None):
+        super(GaussianDemand, self).__init__(source=source, name=name)
 
         self.source = source
         self.seed = seed
@@ -74,8 +75,8 @@ class GaussianDemand(Demand):
 
 
 class LoopbackGaussianDemand(GaussianDemand):
-    def __init__(self, scale, mu, std, period, destination, source=None, seed=42, bins=None, samples=1000):
-        super(LoopbackGaussianDemand, self).__init__(scale, mu, std, period, source, seed, bins, samples)
+    def __init__(self, scale, mu, std, period, destination, source=None, seed=42, bins=None, samples=1000, name=None):
+        super(LoopbackGaussianDemand, self).__init__(scale, mu, std, period, source, seed, bins, samples, name=name)
         assert isinstance(destination, Reservoir), "'destination' must be a Reservoir"
         
         self.destination = destination
@@ -88,8 +89,8 @@ class LoopbackGaussianDemand(GaussianDemand):
 
 
 class StaticDemand(Demand):
-    def __init__(self, source, demand):
-        super(StaticDemand, self).__init__(source)
+    def __init__(self, source, demand, name=None):
+        super(StaticDemand, self).__init__(source=source, name=name)
         assert isinstance(demand, list), "'demand' must be a list"
         self.demand = demand
 
@@ -107,8 +108,8 @@ class StaticDemand(Demand):
 
 
 class LoopbackStaticDemand(StaticDemand):
-    def __init__(self, source, destination, demand):
-        super(LoopbackStaticDemand, self).__init__(source, demand)
+    def __init__(self, source, destination, demand, name=None):
+        super(LoopbackStaticDemand, self).__init__(source=source, demand=demand, name=name)
         assert isinstance(destination, Reservoir), "'destination' must be a Reservoir"
         
         self.destination = destination

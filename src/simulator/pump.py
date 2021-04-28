@@ -2,7 +2,8 @@ from src.simulator.element import ActiveElement
 from src.simulator.reservoir import Reservoir
 
 class Pump(ActiveElement):
-    def __init__(self, source=None, destination=None, flow=None, power=1):
+    def __init__(self, source=None, destination=None, flow=None, power=1, name=None):
+        super(Pump, self).__init__(name)
         assert source is not None, "You have specify a reservoir source of the Pump using the keyword argument 'source'"
         assert destination is not None, "You have specify a destination of the Pump using the keyword argument 'destination'"
         
