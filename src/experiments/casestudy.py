@@ -26,11 +26,11 @@ class CaseStudyExperiment(Experiment):
 
         self.sources = list()
         for i in range(0, costant_sources):
-            self.sources.append(ConstantSource(destination=self.reservoirs[i], flow=0.5))
+            self.sources.append(ConstantSource(destination=self.reservoirs[i], flow=.8))
         
         for i in range(0, normal_sources):
             self.sources.append(GaussianSource(
-                scale=15, mu=12, std=5, period=24, seed=i,
+                scale=30, mu=12, std=5, period=24, seed=i,
                 destination=self.reservoirs[costant_sources + i],
             ))
 
