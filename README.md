@@ -29,11 +29,18 @@ You can specify these arguments
 
 |    Argument   |          Description         |           Default          |
 |:-------------:|:----------------------------:|:--------------------------:|
-|   --problem   |    The problem to optimize   | WaterDemandSequenceProblem |
+|  --experiment |     The experiment to run    |ThresholdPrototypeExperiment|
 |  --algorithm  | The Genetic Algorithm to use |            nsga2           |
 | --generations |     Number of generations    |            1000            |
-|     --save    |   Folder to save results to  |             100            |
+|     --save    |   Folder to save results to  |                            |
 
+The available experiments are:
+
+|         Experiment         |                Description                 |
+|:--------------------------:|:------------------------------------------:|
+|SequencePrototypeExperiment | Sequence optimization of the prototype     |
+|ThresholdPrototypeExperiment| Threshold optimization of the prototype    |
+|ThresholdCaseStudyExperiment| Threshold optimization of the case study   |
 
 To export an excel file with the results saved by `optimize.py`:
 
